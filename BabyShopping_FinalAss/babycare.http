@@ -1,0 +1,55 @@
+GET http://localhost:5143/categories
+
+GET http://localhost:5143/products
+
+GET http://localhost:5143/ratings
+
+
+###
+GET http://localhost:5143/products/4
+
+
+###Post method (insert data)
+POST http://localhost:5143/categories
+Content-Type: application/json
+
+{
+    "CategoryName": "Baby Food",
+    "Description": "Food for infant and baby"
+}
+
+POST http://localhost:5143/products
+Content-Type: application/json
+
+{
+    //"ProductName": "Nabizam", 
+    "RefCategoryId": 1, 
+    "DescriptionProduct": "Diaper from Korean, and size L", 
+    "Price": 265000.0, 
+    "AveragePoint": 7.9, 
+    "Image": "nabizam.jpg", 
+    "CreatedDate": "2024-10-30", 
+    "CreatedBy": "Admin", 
+    "UpdatedDate": "2024-10-30", 
+    "UpdatedBy": "Admin"
+}
+
+###PUT ethod (update data)
+PUT http://localhost:5143/products/4
+Content-Type: application/json
+
+{
+    "productName": "Aptamil Siver",
+    "refCategoryId": 2,
+    "descriptionProduct": "Aptamil NewZeland",
+    "price": 567000.0,
+    "averagePoint": 7.7,
+    "image": "D:\\.NET\\BabyShopping_Image\\Milk\\Powdered milk\\aptamil_bac.jpg",
+    "createdDate": "2024-10-31T10:06:58.8716944+07:00",
+    "createdBy": "Admin",
+    "updatedDate": "2024-10-31T10:06:58.8716946+07:00",
+    "updatedBy": "Admin"
+}
+
+###Delete method
+DELETE  http://localhost:5143/products/4

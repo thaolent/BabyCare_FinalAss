@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\BabyShopping_FinalAss.props" />
+</Project>
