@@ -59,7 +59,7 @@ public static class ProductsEndPoint
             return Results.CreatedAtRoute(GetProductEndPointName, new {id = productID}, product.toProductSummaryDto());
 
 
-        }).WithName(GetProductEndPointName);
+        });
         
 
         // PUT /products

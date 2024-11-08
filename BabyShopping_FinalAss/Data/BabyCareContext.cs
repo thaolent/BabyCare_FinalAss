@@ -59,11 +59,11 @@ public class BabyCareContext(DbContextOptions<BabyCareContext> options) : DbCont
         );
 
         modelBuilder.Entity<Ratings>().HasData(
-            new {RatingId = 1, RefProductIdProductId = 1, Comment = "This iss rating for product 1", Point = 5},
-            new {RatingId = 2, RefProductIdProductId = 6, Comment = "This iss rating for product 6", Point = 7},
-            new {RatingId = 3, RefProductIdProductId = 10, Comment = "This iss rating for product 10", Point = 8},
-            new {RatingId = 4, RefProductIdProductId = 19, Comment = "This iss rating for product 19", Point = 6},
-            new {RatingId = 5, RefProductIdProductId = 22, Comment = "This iss rating for product 22", Point = 9}
+            new {RatingId = 1, ProductId = 1, Comment = "This iss rating for product 1", Point = 5},
+            new {RatingId = 2, ProductId = 6, Comment = "This iss rating for product 6", Point = 7},
+            new {RatingId = 3, ProductId = 10, Comment = "This iss rating for product 10", Point = 8},
+            new {RatingId = 4, ProductId = 19, Comment = "This iss rating for product 19", Point = 6},
+            new {RatingId = 5, ProductId = 22, Comment = "This iss rating for product 22", Point = 9}
         );
 
     }

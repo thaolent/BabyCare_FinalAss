@@ -13,7 +13,7 @@ namespace BabyShopping_FinalAss.Mapping
         {
             return new Ratings()
             {
-                ProductId = _rates.RefProductId,
+                ProductId = 1,
                 Comment = _rates.Comment,
                 Point = _rates.Point
             };
@@ -24,7 +24,7 @@ namespace BabyShopping_FinalAss.Mapping
             return new Ratings()
             {
                 RatingId = _rateId,
-                ProductId = _updateRate.RefProductId,
+                ProductId = 1,
                 Comment = _updateRate.Comment,
                 Point = _updateRate.Point
             };

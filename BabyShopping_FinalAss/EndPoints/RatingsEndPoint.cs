@@ -2,32 +2,42 @@ using System;
 using BabyShopping_FinalAss.Data;
 using BabyShopping_FinalAss.DTOs;
 using BabyShopping_FinalAss.Entities;
+using BabyShopping_FinalAss.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace BabyShopping_FinalAss.EndPoints;
 
 public static class RatingsEndPoint
 {
-    private static readonly List <RatingsDTO> ratings = [
-                    new (1, 1, "This is rating for product 1",5),
-                    new (2,  6, "This is rating for product 6", 7),
-                    new (3, 11, "This iss rating for product 11", 8)
-    ];
-    const string GetRatingEndPointName = "Get Rating";
+    // private static readonly List <RatingsDTO> ratings = [
+    //                 new (1, 1, "This is rating for product 1",5),
+    //                 new (2,  6, "This is rating for product 6", 7),
+    //                 new (3, 11, "This iss rating for product 11", 8)
+    // ];
+    const string GetRatingEndPointName = "GetRating";
     public  static RouteGroupBuilder MapRatingsEndPoint (this WebApplication app)
     {
         var group = app.MapGroup("ratings");
-        
-        group.MapGet("/",()=>ratings);
+
+        group.MapGet("/", async (BabyCareContext dbContext) => 
+            await dbContext.Ratings
+                     .Include(rating => rating.Product)
+                     .Select(rating => rating.toRateSummaryDto())
+                     .AsNoTracking()
+                     .ToListAsync());
+
         //get ratings with id = 1
-        group.MapGet("/{ratingId}",(int ratingId)=> 
+        group.MapGet("/{ratingId}", async (int ratingId, BabyCareContext babyCareContext)=>
         {
-            RatingsDTO? rate = ratings.Find(ratings =>ratings.RatingId == ratingId);
-            return rate is null ? Results.NotFound(): Results.Ok(rate);
+            Ratings? ratings = await babyCareContext.Ratings.FindAsync(ratingId);
+
+            return ratings is null ? 
+                Results.NotFound() : Results.Ok(ratings.toRateSummaryDto());
         }
         ).WithName(GetRatingEndPointName);
 
         //POST Ratings
-        group.MapPost("/",(CreateRatings newrate, BabyCareContext dbContext) => 
+        group.MapPost("/",async(CreateRatings newrate, BabyCareContext dbContext)=> 
         {
 
             // get max id
@@ -40,48 +50,43 @@ public static class RatingsEndPoint
             if(product is null) {
                 return Results.NotFound();
             }
-            Ratings rate = new Ratings {
-                RatingId = ratingID, 
-                RefProductId = product,
-                Comment = newrate.Comment,
-                Point = newrate.Point
-            };
+            
+            Ratings _rate = newrate.ToEntity();
             // insert new product
-            dbContext.Ratings.Add(rate);
-            dbContext.SaveChanges();
-            return Results.CreatedAtRoute(GetRatingEndPointName, new {id = ratingID}, rate);
+            dbContext.Ratings.Add(_rate);
+            await dbContext.SaveChangesAsync();
+            return Results.CreatedAtRoute(GetRatingEndPointName, new {id = ratingID}, _rate.toRateSummaryDto());
 
-        }).WithName(GetRatingEndPointName);
+        });
 
         //Put Rating
-        group.MapPut ("/{_ratingId}",(int _ratingId, UpdateRatingDTO updateRate)=>
+        group.MapPut ("/{_ratingId}",async (int _ratingId, UpdateRatingDTO updatedRate, BabyCareContext dbContext) =>
         {
-                var index = ratings.FindIndex(ratings =>ratings.RatingId == _ratingId);
-                if (index ==-1)
+                var existingRate = await dbContext.Ratings.FindAsync(_ratingId);
+                if (existingRate is null)
                 {
                     return Results.NotFound();
                 }
-                ratings[index] = new RatingsDTO
-                (
-                    _ratingId,
-                    updateRate.RefProductId.ProductId,
-                    updateRate.Comment,
-                    updateRate.Point
-                );
+                dbContext.Entry(existingRate)
+                     .CurrentValues
+                     .SetValues(updatedRate.ToEntity(_ratingId));
+
+                await dbContext.SaveChangesAsync();
 
                 return Results.NoContent();
-
         }
         );
 
         //Delete rating
-        group.MapDelete("/{Rate_Id}", (int Rate_Id) =>
+        group.MapDelete("/{Rate_Id}", async (int _rateid, BabyCareContext dbContext) =>
         {
-            ratings.RemoveAll(ratings=>ratings.RatingId == Rate_Id);
+            await dbContext.Ratings
+                     .Where(rate => rate.RatingId == _rateid)
+                     .ExecuteDeleteAsync();
+
             return Results.NoContent();
         }
         );
-
         return group;
     }
 

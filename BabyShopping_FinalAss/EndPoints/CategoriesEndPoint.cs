@@ -49,11 +49,6 @@ public static class CategoriesEndPoint
             Categories? categoryEntity = dbContext.Categories.OrderByDescending(cate => cate.CategoryId).FirstOrDefault();
             // next id = max id + 1
             int categoryID = categoryEntity is null ? 1 : categoryEntity.CategoryId + 1;
-            // Categories cateEntity = new Categories {
-            //     CategoryId = categoryID, 
-            //     CategoryName = newcat.CategoryName,
-            //     Description = newcat.Description
-            // };
 
             Categories cate = newcat.ToEntity();
             // insert new product
@@ -61,7 +56,7 @@ public static class CategoriesEndPoint
             dbContext.SaveChanges();
             return Results.CreatedAtRoute(GetCategoryEndPointName, new {id = categoryID}, cate.toCateSummaryDto());
 
-        }).WithName(GetCategoryEndPointName);
+        });
 
         //Put Category
         group.MapPut ("/{_categoryId}",async (int id, UpdateProductDTO updatedProduct, BabyCareContext dbContext)=>
