@@ -54,8 +54,11 @@ public class BabyCareContext(DbContextOptions<BabyCareContext> options) : DbCont
         );
 
         modelBuilder.Entity<Accounts>().HasData(
-            new{AccountId = 1, Username = "thaolent", Password = "12345678", Email = "thanhthao110889@gmail.com", Phone = "0982345167", AccountType = 1, Status = 1},
-            new{AccountId = 2, Username = "dungdq", Password = "12345678", Email = "kisshoang@gmail.com", Phone = "0982345168", AccountType = 1, Status = 1}
+            new{AccountId = 1, Username = "thaolent", Password = "12345678", Email = "thanhthao110889@gmail.com", Phone = "0982345167", AccountType = 0, Status = 1},
+            new{AccountId = 2, Username = "dungdq", Password = "12345678", Email = "kisshoang@gmail.com", Phone = "0982345168", AccountType = 1, Status = 1},
+            new{AccountId = 3, Username = "customer1", Password = "12345678", Email = "testdulux1@gmail.com", Phone = "0982345168", AccountType = 1, Status = 1},
+            new{AccountId = 4, Username = "customer2", Password = "12345678", Email = "testdulux2@gmail.com", Phone = "0982345168", AccountType = 1, Status = 1},
+            new{AccountId = 5, Username = "customer3", Password = "12345678", Email = "testdulux3@gmail.com", Phone = "0982345168", AccountType = 1, Status = 1}
         );
 
         modelBuilder.Entity<Ratings>().HasData(

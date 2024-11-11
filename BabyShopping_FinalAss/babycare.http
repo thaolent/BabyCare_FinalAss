@@ -1,8 +1,12 @@
 GET http://localhost:5143/categories
 
+GET http://localhost:5143/categories/1
+
 GET http://localhost:5143/products
 
 GET http://localhost:5143/ratings
+
+GET http://localhost:5143/accounts
 
 
 ###
@@ -14,7 +18,7 @@ POST http://localhost:5143/categories
 Content-Type: application/json
 
 {
-    "CategoryName": "Baby Food",
+    "CategoryName": "Products for Mom",
     "Description": "Food for infant and baby"
 }
 
@@ -22,7 +26,7 @@ POST http://localhost:5143/products
 Content-Type: application/json
 
 {
-    //"ProductName": "Nabizam", 
+    "ProductName": "Mogomom", 
     "RefCategoryId": 1, 
     "DescriptionProduct": "Diaper from Korean, and size L", 
     "Price": 265000.0, 
@@ -34,7 +38,48 @@ Content-Type: application/json
     "UpdatedBy": "Admin"
 }
 
+POST  http://localhost:5143/accounts
+Content-Type: application/json
+{
+    "Username": "customer1",
+    "Password": "12345678",
+    "Email": "testdulux1@gmail.com",
+    "Phone": "0987213456",
+    "AccountType": 1,
+    "Status": 1
+};
+
+{
+    "Username": "customer2",
+    "Password": "12345678",
+    "Email": "testdulux2@gmail.com",
+    "Phone": "0987213456",
+    "AccountType": 1,
+    "Status": 1
+};
+
+{
+    "Username": "customer3",
+    "Password": "12345678",
+    "Email": "testdulux3@gmail.com",
+    "Phone": "0987213456",
+    "AccountType": 1,
+    "Status": 1
+};
+
 ###PUT ethod (update data)
+
+PUT  http://localhost:5143/accounts
+Content-Type: application/json
+{
+    "Username": "thaolent",
+    "Password": "12345678",
+    "Email": "thanhthao110889@gmail.com",
+    "Phone": "0982345167",
+    "AccountType": 0,
+    "Status": 1
+}
+
 PUT http://localhost:5143/products/4
 Content-Type: application/json
 

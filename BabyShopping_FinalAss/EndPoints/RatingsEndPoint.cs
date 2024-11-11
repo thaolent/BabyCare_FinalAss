@@ -55,7 +55,7 @@ public static class RatingsEndPoint
             // insert new product
             dbContext.Ratings.Add(_rate);
             await dbContext.SaveChangesAsync();
-            return Results.CreatedAtRoute(GetRatingEndPointName, new {id = ratingID}, _rate.toRateSummaryDto());
+            return Results.CreatedAtRoute(GetRatingEndPointName, new {ratingId = ratingID}, _rate.toRateSummaryDto());
 
         });
 

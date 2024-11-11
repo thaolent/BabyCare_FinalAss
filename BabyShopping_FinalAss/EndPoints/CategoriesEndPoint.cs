@@ -15,7 +15,7 @@ public static class CategoriesEndPoint
     //                     new (3, "Reconstituted milk", "Mixing milk powder with water to create liquid milk")
     // ];
 
-    const string GetCategoryEndPointName = "Get Category";
+    const string GetCategoryEndPointName = "GetCategory";
     public static RouteGroupBuilder MapCategoriesEndPoint (this WebApplication app)
     {
         var group = app.MapGroup("categories");
@@ -30,7 +30,7 @@ public static class CategoriesEndPoint
                      .ToListAsync());
 
         //get category with id = 1
-        group.MapGet("/{categoryId}",async (int cateId, BabyCareContext babyCareContext) => 
+        group.MapGet("/{cateId}", async (int cateId, BabyCareContext babyCareContext) => 
         {
             // CategoryDTO? cate = categories.Find(categories =>categories.CategoryID == categoryId);
             // return cate is null ? Results.NotFound(): Results.Ok(cate);
@@ -38,31 +38,29 @@ public static class CategoriesEndPoint
             Categories? cates = await babyCareContext.Categories.FindAsync(cateId);
 
             return cates is null ? 
-                Results.NotFound() : Results.Ok(cates.toCateSummaryDto());
+                Results.NotFound() : Results.Ok(cates.toCateDetailDto());
         }
         ).WithName(GetCategoryEndPointName);
 
         //POST Category
-        group.MapPost("/",(CreateCategories newcat, BabyCareContext dbContext) => 
+        group.MapPost("/", async (CreateCategories newcat, BabyCareContext dbContext) => 
         {
-            // get max id
             Categories? categoryEntity = dbContext.Categories.OrderByDescending(cate => cate.CategoryId).FirstOrDefault();
             // next id = max id + 1
-            int categoryID = categoryEntity is null ? 1 : categoryEntity.CategoryId + 1;
-
-            Categories cate = newcat.ToEntity();
+            int cateID = categoryEntity is null ? 1 : categoryEntity.CategoryId + 1;
+            Categories categories = newcat.ToEntity();
             // insert new product
-            dbContext.Categories.Add(cate);
-            dbContext.SaveChanges();
-            return Results.CreatedAtRoute(GetCategoryEndPointName, new {id = categoryID}, cate.toCateSummaryDto());
+            dbContext.Categories.Add(categories);
+            await dbContext.SaveChangesAsync();
+            return Results.CreatedAtRoute(GetCategoryEndPointName, new {cateId = cateID}, categories.toCateSummaryDto());
 
         });
 
         //Put Category
-        group.MapPut ("/{_categoryId}",async (int id, UpdateProductDTO updatedProduct, BabyCareContext dbContext)=>
+        group.MapPut ("/{cateId}",async (int cateId, UpdateCategoryDTO updatedCate, BabyCareContext dbContext)=>
         {
 
-            var existingCate = await dbContext.Categories.FindAsync(id);
+            var existingCate = await dbContext.Categories.FindAsync(cateId);
 
             if (existingCate is null)
             {
@@ -71,7 +69,7 @@ public static class CategoriesEndPoint
 
             dbContext.Entry(existingCate)
                      .CurrentValues
-                     .SetValues(updatedProduct.ToEntity(id));
+                     .SetValues(updatedCate.ToEntity(cateId));
 
             await dbContext.SaveChangesAsync();
 
@@ -81,10 +79,10 @@ public static class CategoriesEndPoint
         );
 
         //Delete cate
-        group.MapDelete("/{Cate_Id}", async (int id, BabyCareContext dbContext) =>
+        group.MapDelete("/{cateId}", async (int cateId, BabyCareContext dbContext) =>
         {
             await dbContext.Categories
-                     .Where(cate => cate.CategoryId == id)
+                     .Where(cate => cate.CategoryId == cateId)
                      .ExecuteDeleteAsync();
 
             return Results.NoContent();

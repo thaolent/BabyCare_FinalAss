@@ -15,7 +15,7 @@ namespace BabyShopping_FinalAss.Mapping
             return new Categories()
             {
                 CategoryName = _cate.CategoryName,
-                Description = _cate.CategoryName
+                Description = _cate.Description
             };
         }
 
@@ -25,11 +25,20 @@ namespace BabyShopping_FinalAss.Mapping
             {
                 CategoryId = cate_Id,
                 CategoryName = _updatcate.CategoryName,
-                Description = _updatcate.CategoryName
+                Description = _updatcate.Description
             };
         }
 
         public static CategorySumaryDTO toCateSummaryDto (this Categories cates)
+        {
+            return new (
+                cates.CategoryId,
+                cates.CategoryName,
+                cates.Description
+            );
+        }
+
+        public static CategoryDetailDTO toCateDetailDto (this Categories cates)
         {
             return new (
                 cates.CategoryId,

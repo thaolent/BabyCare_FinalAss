@@ -34,7 +34,7 @@ public static class ProductsEndPoint
             Products? products = await babyCareContext.Products.FindAsync(productId);
 
             return products is null ? 
-                Results.NotFound() : Results.Ok(products.toProductSummaryDto());
+                Results.NotFound() : Results.Ok(products.toProductDetailDto());
         }
         ).WithName(GetProductEndPointName);
 
@@ -56,9 +56,7 @@ public static class ProductsEndPoint
             // insert new product
             dbContext.Products.Add(product);
             await dbContext.SaveChangesAsync();
-            return Results.CreatedAtRoute(GetProductEndPointName, new {id = productID}, product.toProductSummaryDto());
-
-
+            return Results.CreatedAtRoute(GetProductEndPointName, new {productId = productID}, product.toProductSummaryDto());
         });
         
 

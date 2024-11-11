@@ -57,4 +57,17 @@ public static class ProductMapping
             products.Image
         );
     }
+
+    public static ProductDetailDto toProductDetailDto (this Products products)
+    {
+        return new (
+            products.ProductId,
+            products.ProductName,
+            products.CategoryId,
+            products.Description,
+            products.Price,
+            products.AveragePoint,
+            products.Image
+        );
+    }
 }

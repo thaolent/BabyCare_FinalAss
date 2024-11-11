@@ -15,78 +15,71 @@ public static class AccountsEndPoint
     //                     new (2, "nicemole", "12345679", "testdulux1@gmail.com", "0982345168",1,1)
     // ];
 
-    const string GetAccountEndPoint = "Get Account";
+    const string GetAccountEndPoint = "GetAccount";
     public static RouteGroupBuilder MapAccountEndpoint (this WebApplication app)
     {
         var group = app.MapGroup("accounts");
 
-        app.MapGet("/", async (BabyCareContext dbContext)=> 
+        group.MapGet("/", async (BabyCareContext dbContext)=> 
                 await dbContext.Accounts
                                 .Select(acc =>acc.toDTO())
                                 .AsNoTracking()
                                 .ToListAsync());
         
-        return group;
+        
 
-        //get products = 1
-        // app.MapGet("/{accountId}",async (int accountId, BabyCareContext dbContext)=>
-        // {
-        //     Accounts? account = await dbContext.Accounts.FindAsync(accountId);
+        //get account with username
+        app.MapGet("/{userName}", async (string userName, BabyCareContext dbContext)=>
+        {
+            Accounts? account = await dbContext.Accounts.FindAsync(userName);
 
-        //     return group;
-        // }
-        // ).WithName(GetAccountEndPoint);
+            return account is null ? 
+                Results.NotFound() : Results.Ok(account.toDTO());
+        }
+        ).WithName(GetAccountEndPoint);
 
         //POST account
-        // app.MapPost("accounts/_accounType",(CreateAccountDTO newacc, BabyCareContext dbContext) => 
-        // {
-        //     // get max id
-        //     Accounts? account = dbContext.Accounts.OrderByDescending(acc => acc.AccountId).FirstOrDefault();
-        //     //find account type
-        //     Accounts? accType = dbContext.Accounts.Find(newacc.AccountType);
-        //     int accountID;
-        //     if (accType!=null && accType.Equals(1))
-        //     {
-        //         accountID = account is null ? 1 : account.AccountId + 1;
-        //         Accounts accs = new Accounts() {
-        //             AccountId = accountID, 
-        //             Username = newacc.UserName,
-        //             Email = newacc.Email,
-        //             Password = newacc.Password,
-        //             Phone = newacc.Phone,
-        //             AccountType = newacc.AccountType,
-        //             Status = newacc.Status
-        //         };
-        //      // insert new product
-        //         dbContext.Accounts.Add(accs);
-        //         dbContext.SaveChanges();
-        //         return Results.CreatedAtRoute(GetAccountEndPoint, new {id = accountID}, accs);
-        //     }
-        //     return Results.NotFound();
+        group.MapPost("/{accountType}",async (int accountType, CreateAccountDTO newacc, BabyCareContext dbContext) => 
+        {
+            // get max id
+            Accounts? account = dbContext.Accounts.OrderByDescending(acc => acc.AccountId).FirstOrDefault();
+            //find account type
+            Accounts? accType = dbContext.Accounts.Where(acc => acc.Username.Equals(newacc.UserName)).FirstOrDefault();
+            // username existing
+            if (accType != null) {
+                return Results.BadRequest();
+            } else {
+                int accountID = account is null ? 1 : account.AccountId + 1;
+                Accounts acc = newacc.ToEntity();
+             // insert new product
+                dbContext.Accounts.Add(acc);
+                await dbContext.SaveChangesAsync();
+                return Results.CreatedAtRoute(GetAccountEndPoint, new {userName = accountID}, acc.toDTO());
+            }
+            //return Results.NotFound();
             
-        // }).WithName(GetAccountEndPoint);
+        });
 
         //Put accounts
-        // app.MapPut ("accounts/{_accountId}", (int _accountId, UpdateAccountDTO updateAccount) => 
-        // {
-        //     var index = accounts.FindIndex(accounts => accounts.AccountId == _accountId);
+        group.MapPut ("/{_accountId}", async (int _accountId, UpdateAccountDTO updateAccount, BabyCareContext dbContext) => 
+        {
+            var existingAcc = await dbContext.Accounts.FindAsync(_accountId);
 
-        //     if (index ==-1)
-        //     {
-        //         return Results.NotFound();
-        //     }
+            if (existingAcc is null)
+            {
+                return Results.NotFound();
+            }
 
-        //     // AccountsDTO updateAccountDTO = accounts[index];
-        //     // updateAccountDTO.Email(updateAccount.Email);
+            dbContext.Entry(existingAcc)
+                     .CurrentValues
+                     .SetValues(updateAccount.ToEntity(_accountId));
 
-        //     var updateAcc = accounts[index];
-        //     updateAcc.Email = updateAccount.Email;
+            await dbContext.SaveChangesAsync();
 
-                
-        //     return Results.NoContent();
+            return Results.NoContent();
 
-        // }
-        // );
+        }
+        );
 
         //Delete accounts
         // app.MapDelete("accounts/{Account_id}", (int Account_id) =>
@@ -96,6 +89,7 @@ public static class AccountsEndPoint
         // }
         // );
         // return app;
+        return group;
 
     }
 

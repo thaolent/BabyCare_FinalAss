@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj": {}
+    "d:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj": {}
   },
   "projects": {
-    "D:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj": {
+    "d:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj",
+        "projectUniqueName": "d:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj",
         "projectName": "BabyShopping_FinalAss",
-        "projectPath": "D:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj",
+        "projectPath": "d:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\BabyShopping_FinalAss.csproj",
         "packagesPath": "C:\\Users\\thaolent.HARVEYNASH\\.nuget\\packages\\",
-        "outputPath": "D:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\obj\\",
+        "outputPath": "d:\\.NET\\BabyShopping_FinalAss\\BabyShopping_FinalAss\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

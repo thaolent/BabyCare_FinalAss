@@ -11,8 +11,6 @@ namespace BabyShopping_FinalAss.Mapping
     {
         public static Accounts ToEntity (this CreateAccountDTO _acc)
         {
-            if (_acc.AccountType.Equals(1))
-            {
                 return new Accounts()
                 {
                     Username = _acc.UserName,
@@ -22,14 +20,27 @@ namespace BabyShopping_FinalAss.Mapping
                     AccountType = _acc.AccountType,
                     Status = _acc.Status
                 };
+        }
 
-            }
-            return (Accounts)Results.NotFound();
+        public static Accounts ToEntity (this UpdateAccountDTO _acc, int _accId)
+        {
+                return new Accounts()
+                {
+                    AccountId = _accId,
+                    Username = _acc.UserName,
+                    Email = _acc.Email,
+                    Password = _acc.Password,
+                    Phone = _acc.Phone,
+                    AccountType = _acc.AccountType,
+                    Status = _acc.Status
+                };
         }
 
         public static AccountsDTO toDTO (this Accounts _acc)
         {
+            
             return new AccountsDTO(_acc.AccountId, _acc.Username, _acc.Email, _acc.Password, _acc.Phone, _acc.AccountType, _acc.Status);
+            
                 
         }
         
