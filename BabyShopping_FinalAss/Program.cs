@@ -16,7 +16,7 @@ app.MapCategoriesEndPoint();
 app.MapRatingsEndPoint();
 app.MapAccountEndpoint();
 
-app.MigrateDB(); 
+await app.MigrateDBAsync();
 
 // const string GetProductEndPointName = "Get Product";
 // const string GetCategoryEndPointName = "Get Category";

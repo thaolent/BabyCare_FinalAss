@@ -8,10 +8,10 @@ using Microsoft.VisualBasic;
 namespace BabyShopping_FinalAss.Data;
 public static class DataExtensions
 {
-    public static void MigrateDB(this WebApplication app)
+    public static async Task MigrateDBAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<BabyCareContext>();
-        dbContext.Database.Migrate();
+        await dbContext.Database.MigrateAsync();
     }
 }

@@ -26,9 +26,9 @@ POST http://localhost:5143/products
 Content-Type: application/json
 
 {
-    "ProductName": "Mogomom", 
+    "ProductName": "Big Hugs Organic", 
     "RefCategoryId": 1, 
-    "DescriptionProduct": "Diaper from Korean, and size L", 
+    "DescriptionProduct": "From China", 
     "Price": 265000.0, 
     "AveragePoint": 7.9, 
     "Image": "nabizam.jpg", 
@@ -38,34 +38,17 @@ Content-Type: application/json
     "UpdatedBy": "Admin"
 }
 
-POST  http://localhost:5143/accounts
+POST http://localhost:5143/accounts/1
 Content-Type: application/json
 {
-    "Username": "customer1",
-    "Password": "12345678",
-    "Email": "testdulux1@gmail.com",
-    "Phone": "0987213456",
-    "AccountType": 1,
-    "Status": 1
-};
+    "UserName": "customer4", 
+    "Email": "testdulux7@gmail.com",
+    "Password" : "12345678",
+    "Phone" : "0982345167",
+    "AccountType" : 1,
+    "Status" : 1
+}
 
-{
-    "Username": "customer2",
-    "Password": "12345678",
-    "Email": "testdulux2@gmail.com",
-    "Phone": "0987213456",
-    "AccountType": 1,
-    "Status": 1
-};
-
-{
-    "Username": "customer3",
-    "Password": "12345678",
-    "Email": "testdulux3@gmail.com",
-    "Phone": "0987213456",
-    "AccountType": 1,
-    "Status": 1
-};
 
 ###PUT ethod (update data)
 
